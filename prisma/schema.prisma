@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Type {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique @db.VarChar(40)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt()
+  PokemonsOnTypes PokemonsOnTypes[]
+
+  @@map("types")
+}
+
+model Pokemon {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique @db.VarChar(40)
+  weight          Float
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt()
+  PokemonsOnTypes PokemonsOnTypes[]
+  UsersOnPokemons UsersOnPokemons[]
+
+  @@map("pokemons")
+}
+
+model PokemonsOnTypes {
+  id         Int     @id @default(autoincrement())
+  type       Type    @relation(fields: [id_type], references: [id])
+  id_type    Int
+  pokemon    Pokemon @relation(fields: [id_pokemon], references: [id])
+  id_pokemon Int
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique @db.VarChar(50)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt()
+  UsersOnPokemons UsersOnPokemons[]
+
+  @@map("users")
+}
+
+model UsersOnPokemons {
+  id         Int     @id @default(autoincrement())
+  user       User    @relation(fields: [id_user], references: [id])
+  id_user    Int
+  pokemon    Pokemon @relation(fields: [id_pokemon], references: [id])
+  id_pokemon Int
+}
