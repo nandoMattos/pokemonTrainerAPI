@@ -5,15 +5,13 @@ function insertOne(newUser: NewUserBody) {
   return prisma.user.create({ data: newUser });
 }
 
-function findMany(name: string) {
-  return prisma.user.findMany({
-    where: { name: { startsWith: name, mode: "insensitive" } },
-  });
+function findAll() {
+  return prisma.user.findMany();
 }
 
-const userRepository = {
+const pokemonRepository = {
   insertOne,
-  findMany,
+  findAllUsers,
 };
 
-export default userRepository;
+export default pokemonRepository;
