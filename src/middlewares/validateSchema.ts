@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Schema } from "joi";
 
 export function validateSchemaMiddleware(schema: Schema) {
@@ -7,7 +7,6 @@ export function validateSchemaMiddleware(schema: Schema) {
     if (error) {
       return res.status(422).send(error.details.map((d) => d.message));
     }
-
     next();
   };
 }
