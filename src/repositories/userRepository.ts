@@ -5,6 +5,10 @@ function insertOne(newUser: NewUserBody) {
   return prisma.user.create({ data: newUser });
 }
 
+function findOneByName(username: string) {
+  return prisma.user.findFirst({ where: { name: username } });
+}
+
 function findMany(name: string) {
   return prisma.user.findMany({
     where: { name: { startsWith: name, mode: "insensitive" } },
@@ -13,6 +17,7 @@ function findMany(name: string) {
 
 const userRepository = {
   insertOne,
+  findOneByName,
   findMany,
 };
 

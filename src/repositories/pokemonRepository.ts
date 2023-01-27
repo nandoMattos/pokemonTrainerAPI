@@ -1,17 +1,30 @@
 import prisma from "../database/db.js";
-import { NewUserBody } from "../protocols/User.js";
+import { NewPokemon, NewPokemonBody } from "../protocols/Pokemon.js";
+import { NewType } from "../protocols/Type.js";
 
-function insertOne(newUser: NewUserBody) {
-  return prisma.user.create({ data: newUser });
+function insertOne(newPokemon: NewPokemon, newTypes: NewType[]) {
+  const types = newTypes.map((t) => {
+    return { type: { create: { name: t.name } } };
+  });
+
+  return prisma.pokemon.create({
+    data: {
+      name: newPokemon.name,
+      weight: newPokemon.weight,
+      type: {
+        create: types,
+      },
+    },
+  });
 }
 
-function findAll() {
-  return prisma.user.findMany();
+function findOne(name: string) {
+  return prisma.pokemon.findFirst({ where: { name } });
 }
 
 const pokemonRepository = {
   insertOne,
-  findAllUsers,
+  findOne,
 };
 
 export default pokemonRepository;

@@ -11,25 +11,21 @@ datasource db {
 }
 
 model Type {
-  id              Int               @id @default(autoincrement())
-  name            String            @unique @db.VarChar(40)
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt()
-  PokemonsOnTypes PokemonsOnTypes[]
-
-  @@map("types")
+  id         Int               @id @default(autoincrement())
+  name       String            @unique @db.VarChar(40)
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt()
+  pokemon    PokemonsOnTypes[]
 }
 
 model Pokemon {
-  id              Int               @id @default(autoincrement())
-  name            String            @unique @db.VarChar(40)
-  weight          Float
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt()
-  PokemonsOnTypes PokemonsOnTypes[]
-  UsersOnPokemons UsersOnPokemons[]
-
-  @@map("pokemons")
+  id         Int               @id @default(autoincrement())
+  name       String            @unique @db.VarChar(40)
+  weight     Float
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt()
+  type       PokemonsOnTypes[]
+  user       UsersOnPokemons[]
 }
 
 model PokemonsOnTypes {
@@ -41,13 +37,11 @@ model PokemonsOnTypes {
 }
 
 model User {
-  id              Int               @id @default(autoincrement())
-  name            String            @unique @db.VarChar(50)
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt()
-  UsersOnPokemons UsersOnPokemons[]
-
-  @@map("users")
+  id         Int               @id @default(autoincrement())
+  name       String            @unique @db.VarChar(50)
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt()
+  pokemon    UsersOnPokemons[]
 }
 
 model UsersOnPokemons {
