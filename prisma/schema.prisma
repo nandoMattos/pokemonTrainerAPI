@@ -11,43 +11,27 @@ datasource db {
 }
 
 model Type {
-  id         Int               @id @default(autoincrement())
-  name       String            @unique @db.VarChar(40)
-  created_at DateTime          @default(now())
-  updated_at DateTime          @updatedAt()
-  pokemon    PokemonsOnTypes[]
+  id         Int       @id @default(autoincrement())
+  name       String    @unique @db.VarChar(40)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt()
+  pokemons   Pokemon[]
 }
 
 model Pokemon {
-  id         Int               @id @default(autoincrement())
-  name       String            @unique @db.VarChar(40)
+  id         Int      @id @default(autoincrement())
+  name       String   @unique @db.VarChar(40)
   weight     Float
-  created_at DateTime          @default(now())
-  updated_at DateTime          @updatedAt()
-  type       PokemonsOnTypes[]
-  user       UsersOnPokemons[]
-}
-
-model PokemonsOnTypes {
-  id         Int     @id @default(autoincrement())
-  type       Type    @relation(fields: [id_type], references: [id])
-  id_type    Int
-  pokemon    Pokemon @relation(fields: [id_pokemon], references: [id])
-  id_pokemon Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+  types      Type[]
+  users      User[]
 }
 
 model User {
-  id         Int               @id @default(autoincrement())
-  name       String            @unique @db.VarChar(50)
-  created_at DateTime          @default(now())
-  updated_at DateTime          @updatedAt()
-  pokemon    UsersOnPokemons[]
-}
-
-model UsersOnPokemons {
-  id         Int     @id @default(autoincrement())
-  user       User    @relation(fields: [id_user], references: [id])
-  id_user    Int
-  pokemon    Pokemon @relation(fields: [id_pokemon], references: [id])
-  id_pokemon Int
+  id         Int       @id @default(autoincrement())
+  name       String    @unique @db.VarChar(50)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt()
+  pokemon    Pokemon[]
 }

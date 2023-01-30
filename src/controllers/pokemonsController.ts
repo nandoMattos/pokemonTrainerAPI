@@ -1,17 +1,12 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import prisma from "../database/db.js";
 import { NewPokemonBody } from "../protocols/Pokemon.js";
-import { insertPokemonAndNewType } from "../services/pokemonsService.js";
-import { convertToPokemon, convertToType } from "../utilities/convertions.js";
+import pokemonService from "../services/pokemonsService.js";
 
 export async function postPokemon(req: Request, res: Response) {
-  const newPokemonAndType: NewPokemonBody = req.body;
-  const newPokemon = convertToPokemon(newPokemonAndType);
-  const newTypes = convertToType(newPokemonAndType);
-
   try {
-    await insertPokemonAndNewType(newPokemon, newTypes);
+    const newPokemonAndType = req.body as NewPokemonBody;
+    await pokemonService.insertPokemonAndTypes(newPokemonAndType);
 
     res.sendStatus(httpStatus.CREATED);
   } catch (err) {
@@ -24,6 +19,8 @@ export async function postPokemon(req: Request, res: Response) {
 }
 
 export async function getAllPokemons(req: Request, res: Response) {
-  const pokemons = await prisma.pokemon.findMany();
+  const name = req.query.name as string;
+
+  const pokemons = await pokemonService.getAllWithName(name);
   res.send(pokemons);
 }

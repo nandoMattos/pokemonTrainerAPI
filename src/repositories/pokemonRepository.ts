@@ -2,29 +2,40 @@ import prisma from "../database/db.js";
 import { NewPokemon, NewPokemonBody } from "../protocols/Pokemon.js";
 import { NewType } from "../protocols/Type.js";
 
-function insertOne(newPokemon: NewPokemon, newTypes: NewType[]) {
-  const types = newTypes.map((t) => {
-    return { type: { create: { name: t.name } } };
+function insertOneConnectingTypes(pokemon: NewPokemon, types: NewType[]) {
+  const arrTypes = types.map((t) => {
+    return { where: t, create: t };
   });
 
   return prisma.pokemon.create({
     data: {
-      name: newPokemon.name,
-      weight: newPokemon.weight,
-      type: {
-        create: types,
+      ...pokemon,
+      types: {
+        connectOrCreate: arrTypes,
       },
     },
   });
 }
 
-function findOne(name: string) {
+function findOneByName(name: string) {
   return prisma.pokemon.findFirst({ where: { name } });
 }
 
+function findManyWithName(name?: string) {
+  return prisma.pokemon.findMany({
+    where: { name: { startsWith: name, mode: "insensitive" } },
+    select: {
+      id: true,
+      name: true,
+      types: { select: { id: true, name: true } },
+    },
+  });
+}
+
 const pokemonRepository = {
-  insertOne,
-  findOne,
+  insertOneConnectingTypes,
+  findOneByName,
+  findManyWithName,
 };
 
 export default pokemonRepository;

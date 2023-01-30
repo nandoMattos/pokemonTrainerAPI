@@ -1,12 +1,17 @@
+import { PrismaPromise } from "@prisma/client";
 import prisma from "../database/db.js";
-import { NewType } from "../protocols/Type.js";
+import { NewType, TypeBody } from "../protocols/Type.js";
 
-function insertMany(types: NewType[]) {
-  return prisma.type.createMany({ data: types });
+function findManyWithName(types: NewType[]): PrismaPromise<TypeBody[]> {
+  return prisma.type.findMany({
+    where: {
+      OR: types,
+    },
+  });
 }
 
-const typeRepository = {
-  insertMany,
+const typesRepository = {
+  findManyWithName,
 };
 
-export default typeRepository;
+export default typesRepository;
