@@ -15,7 +15,7 @@ export async function insertUser(newUser: NewUserBody) {
   await userRepository.insertOne(newUser);
 }
 
-export async function findMany(name: string): Promise<PrismaPromise<User[]>> {
+export async function findMany(name: string) {
   return await userRepository.findMany(name);
 }
 

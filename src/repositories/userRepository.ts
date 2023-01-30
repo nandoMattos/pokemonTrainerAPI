@@ -14,8 +14,9 @@ function findOneByName(username: string): PrismaPromise<User> {
   return prisma.user.findFirst({ where: { name: username } });
 }
 
-function findMany(name: string): PrismaPromise<User[]> {
+function findMany(name: string) {
   return prisma.user.findMany({
+    select: { id: true, name: true },
     where: { name: { startsWith: name, mode: "insensitive" } },
   });
 }
