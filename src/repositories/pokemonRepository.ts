@@ -17,6 +17,10 @@ function insertOneConnectingTypes(pokemon: NewPokemon, types: NewType[]) {
   });
 }
 
+function findOneById(id: number) {
+  return prisma.pokemon.findFirst({ where: { id } });
+}
+
 function findOneByName(name: string) {
   return prisma.pokemon.findFirst({ where: { name } });
 }
@@ -34,6 +38,7 @@ function findManyWithName(name?: string) {
 
 const pokemonRepository = {
   insertOneConnectingTypes,
+  findOneById,
   findOneByName,
   findManyWithName,
 };

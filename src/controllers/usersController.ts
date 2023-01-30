@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { NewUserBody } from "../protocols/User.js";
-import { findMany, insertUser } from "../services/usersService.js";
+import usersService, {
+  findMany,
+  insertUser,
+} from "../services/usersService.js";
 
 export async function postUser(req: Request, res: Response) {
   try {
@@ -10,7 +13,6 @@ export async function postUser(req: Request, res: Response) {
 
     res.sendStatus(httpStatus.CREATED);
   } catch (err) {
-    console.log(err);
     if (err.name === "ConflictError") {
       return res.sendStatus(httpStatus.CONFLICT);
     }
@@ -20,8 +22,30 @@ export async function postUser(req: Request, res: Response) {
 }
 
 export async function getUsers(req: Request, res: Response) {
-  const userName = req.query.name as string;
-  const users = await findMany(userName);
+  try {
+    const userName = req.query.name as string;
+    const users = await findMany(userName);
 
-  res.send(users);
+    return res.status(httpStatus.OK).send(users);
+  } catch (err) {
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function capturePokemon(req: Request, res: Response) {
+  try {
+    const userId = Number(req.params.userId);
+    const pokemonId = Number(req.params.pokemonId);
+
+    await usersService.handleCapture(userId, pokemonId);
+
+    res.sendStatus(httpStatus.NO_CONTENT);
+  } catch (err) {
+    if (err.name === "ConflictError") {
+      return res.status(httpStatus.CONFLICT).send(err.message);
+    }
+    if (err.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(err.message);
+    }
+  }
 }
