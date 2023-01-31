@@ -94,12 +94,12 @@ With PokemonTrainer, you can manage your Pokemons inserting their name, weight a
     ]
   },
   {
-    "id": 65,
-    "name": "Togepi",
-    "types": [
+    id: 65,
+    name: "Togepi",
+    types: [
       {
-        "id": 66,
-        "name": "Fairy"
+        id: 66,
+        name: "Fairy"
       }
     ]
   },
