@@ -43,7 +43,7 @@ With PokemonTrainer, you can manage your Pokemons inserting their name, weight a
 - requires a body in the format:
 ```js
 {
-  name: "Ash"
+  "name": "Ash"
 }
 ```
 
@@ -55,10 +55,16 @@ With PokemonTrainer, you can manage your Pokemons inserting their name, weight a
 - accepts a query to filter user name 
 - returns an array in the format:
 ```js
+[
   {
-    "id": 7,
-    "name": "Ash"
+    id: 7,
+    name: "Ash"
+  },
+  {
+    id: 8,
+    name: "Misty"
   }
+]
 ```
 
 
@@ -66,9 +72,9 @@ With PokemonTrainer, you can manage your Pokemons inserting their name, weight a
 - requires a body in the format:
 ```js
 {
-  name: "Bulbasaur"
-  weight: 6.9,
-  type: ["Grass", "Poison"]
+  "name": "Bulbasaur"
+  "weight": 6.9,
+  "type": ["Grass", "Poison"]
 }
 ```
 
@@ -78,12 +84,12 @@ With PokemonTrainer, you can manage your Pokemons inserting their name, weight a
 ```js
 [
   {
-    "id": 64,
-    "name": "Pikachu",
-    "types": [
+    id: 64,
+    name: "Pikachu",
+    types: [
       {
-        "id": 65,
-        "name": "Eletric"
+        id: 65,
+        name: "Eletric"
       }
     ]
   },
@@ -100,7 +106,7 @@ With PokemonTrainer, you can manage your Pokemons inserting their name, weight a
 ]
 ```
 
-### `INCOME FEATURES`:
+### `COMING SOON`:
 - delete a pokemon
 - delete an user
 - update pokemons and its types
